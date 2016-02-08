@@ -70,6 +70,7 @@ if($string["errors"][0]["message"] != ""){
 
 echo "<pre>";
 //print_r($string);
+echo "done";
 echo "</pre>";
 
 
