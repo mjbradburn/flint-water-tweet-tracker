@@ -11,7 +11,10 @@ $settings = array (
 
 $url = "https://api.twitter.com/1.1/search/tweets.json";
 $requestMethod = "GET";
-$getfield = '?q=%23FlintWaterCrisis&src=tyah&count=100&result_type=recent';
+$since_id = "471479529731411968";
+$max_id = "697189541694873600";
+$getfield = '?q=%23#flintwatercrisis&src=tyah&result_type=recent&count=100';
+//echo $getfield;
 $twitter = new TwitterAPIExchange($settings);
 
 $string = json_decode($twitter->setGetField($getfield)
@@ -23,38 +26,64 @@ if (file_exists('coordinates.json')){
 } else {
 	$saved_coords['flint'] = array('lat'=>43.01,'long'=>83.69);
 }
-
+$count = 0;
 foreach($string["statuses"] as $statuses){
-
+	$count++;
 	$location = strtolower($statuses['user']['location']);
 	//check to see if we already have that location OR get it.
 	if($location && !array_key_exists ( $location , $saved_coords )){
 		$coordinates = geocode($location);
 		$saved_coords[$location] = array('lat'=>$coordinates['lat'],'long'=>$coordinates['long']);
 	}
-
-	echo "Created at: " .$statuses['created_at']."<br />" ;
+	$id = $statuses['id'];
+	//echo gettype($id);
+	echo "Tweet_ID: ".$id."<br />";
+	//convert date to mysql datetime format
+	$twitter_date = $statuses['created_at'];
+	$format = 'D M d H:i:s \+\0\0\0\0 Y';
+	$new_format_date = DateTime::createFromFormat($format,$twitter_date);
+	$created_at = $new_format_date->format('Y-m-d H:i:s');
+	//echo gettype($created_at);
+	echo "Created at: " .$created_at."<br />" ;
 	echo "Location: " .$location. "<br />" ;
 	
 	if($location){
-/*		echo "Latitude: ".$coordinates['lat']."<br />";
-		echo "Longitude: ".$coordinates['long']."<br />";*/
-		echo "Latitude: ".$saved_coords[$location]['lat']."<br />";
-		echo "Longitude: ".$saved_coords[$location]['long']."<br />";
+		$lat = $saved_coords[$location]['lat'];
+		$long = $saved_coords[$location]['long'];
+		echo "Latitude: ".$lat."<br />";
+		echo "Longitude: ".$long."<br />";
 	}
 
-	echo "Followers: " .$statuses['user']['followers_count']."<br /><hr />" ;
+	$followers = $statuses['user']['followers_count'];
+	$retweets = $statuses['retweet_count'];
+	echo "Followers: " .$followers."<br />" ;
+	echo "Retweets: " .$retweets."<br /><hr />";
 
-	/*echo "Time and Date of Tweet: ".$items['created_at']."<br />";
-	echo "Tweet: ". $items['text']."<br />";
-	echo "Tweeted by: ". $items['user']['name']."<br />";
-	echo "Screen name: ". $items['user']['screen_name']."<br />";
-	echo "Followers: ". $items['user']['followers_count']."<br />";
-	echo "Friends: ". $items['user']['friends_count']."<br />";
-	echo "Listed: ". $items['user']['listed_count']."<br />";
-	echo "Location:". $items['user']['location']."<br /><hr />";*/
+	//insert into database
+	$con = mysqli_connect("localhost","newuser","password","tweetmap");
+	if (!$con){ 
+		echo "Error: Unable to connect".PHP_EOL;
+		echo "Debugging error:".mysqli_connect_errno() . PHP_EOL;
+		echo "Debugging error:".mysqli_connect_error().PHP_EOL;
+		exit;
+	}
+	echo "Success: connection was made. ". PHP_EOL;
+
+	if($lat){
+		$query = "INSERT INTO tweets (`id`,`created_at`,`latitude`,`longitude`,`followers`,`retweets`)
+		VALUES ('$id','$created_at',$lat,$long,$followers,$retweets)";
+		echo "latitude=true";
+		if (mysqli_query($con,$query)){
+			echo "insert success";
+		} else {
+			echo "insert fail ". mysqli_error($con);
+		}
+	}
+	mysqli_close($con);
+
 }
 $num_saved = count($saved_coords);
+echo "Tweets found: ".$count."<br />";
 echo "Number of saved locations: ".$num_saved."<br />";
 
 file_put_contents('coordinates.json',json_encode($saved_coords));
@@ -69,10 +98,7 @@ if($string["errors"][0]["message"] != ""){
 }
 
 echo "<pre>";
-//print_r($string);
-echo "done";
+print_r($string);
 echo "</pre>";
-
-
 
 ?>
