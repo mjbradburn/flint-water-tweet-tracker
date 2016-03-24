@@ -11,10 +11,9 @@ $settings = array (
 
 $url = "https://api.twitter.com/1.1/search/tweets.json";
 $requestMethod = "GET";
-$since_id = "471479529731411968";
-$max_id = "697189541694873600";
+/*$since_id = "471479529731411968";
+$max_id = "697189541694873600";*/
 $getfield = '?q=%23#flintwatercrisis&src=tyah&result_type=recent&count=100';
-//echo $getfield;
 $twitter = new TwitterAPIExchange($settings);
 
 $string = json_decode($twitter->setGetField($getfield)
@@ -36,14 +35,13 @@ foreach($string["statuses"] as $statuses){
 		$saved_coords[$location] = array('lat'=>$coordinates['lat'],'long'=>$coordinates['long']);
 	}
 	$id = $statuses['id'];
-	//echo gettype($id);
 	echo "Tweet_ID: ".$id."<br />";
 	//convert date to mysql datetime format
 	$twitter_date = $statuses['created_at'];
 	$format = 'D M d H:i:s \+\0\0\0\0 Y';
 	$new_format_date = DateTime::createFromFormat($format,$twitter_date);
 	$created_at = $new_format_date->format('Y-m-d H:i:s');
-	//echo gettype($created_at);
+	
 	echo "Created at: " .$created_at."<br />" ;
 	echo "Location: " .$location. "<br />" ;
 	
@@ -67,12 +65,11 @@ foreach($string["statuses"] as $statuses){
 		echo "Debugging error:".mysqli_connect_error().PHP_EOL;
 		exit;
 	}
-	echo "Success: connection was made. ". PHP_EOL;
+	//echo "Success: connection was made. ". PHP_EOL;
 
 	if($lat){
 		$query = "INSERT INTO tweets (`id`,`created_at`,`latitude`,`longitude`,`followers`,`retweets`)
 		VALUES ('$id','$created_at',$lat,$long,$followers,$retweets)";
-		echo "latitude=true";
 		if (mysqli_query($con,$query)){
 			echo "insert success";
 		} else {
@@ -87,9 +84,6 @@ echo "Tweets found: ".$count."<br />";
 echo "Number of saved locations: ".$num_saved."<br />";
 
 file_put_contents('coordinates.json',json_encode($saved_coords));
-/*echo $twitter->setGetfield($getfield)
-             ->buildOauth($url, $requestMethod)
-             ->performRequest();*/
 
 if($string["errors"][0]["message"] != ""){
 	echo "<h3>Sorry, there was a problem.</h3>

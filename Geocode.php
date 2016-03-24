@@ -1,6 +1,6 @@
 <?php
 function geocode($address){
-	echo "calling twitter";
+	//echo "calling twitter";
 	$address = urlencode($address);
 	$url = "http://maps.google.com/maps/api/geocode/json?address={$address}";
 	$resp_json = file_get_contents($url);
