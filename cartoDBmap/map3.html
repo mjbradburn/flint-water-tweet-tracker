@@ -67,218 +67,147 @@
             </style>
            
             <style type="cartocss/html" id="simple">
-            #earthquakes_cdbjs_lesson3{
-              marker-fill-opacity: 0.9;
-              marker-line-color: #FFF;
-              marker-line-width: 1;
-              marker-line-opacity: 1;
-              marker-placement: point;
-              marker-type: ellipse;
-              marker-width: 10;
-              marker-fill: #FF6600;
-              marker-allow-overlap: true;
+            /** simple visualization */
+
+            #tweets{
+            	marker-fill-opacity: 0.9;
+            	marker-line-color: #FFF;
+            	marker-line-width: 0.5;
+            	marker-line-opacity: 1;
+            	marker-placement: point;
+            	marker-type: ellipse;
+            	marker-width: 10;
+            	marker-fill: #5CA2D1;
+            	marker-allow-overlap: true;
             }
             </style>
-            <style type="cartocss/html" id="categ-report-sta">
+            <style type="cartocss/html" id="cloropleth-followers">
             /** category visualization */
 
-            #earthquakes_cdbjs_lesson3 {
-               marker-fill-opacity: 0.9;
-               marker-line-color: #FFF;
-               marker-line-width: 0;
-               marker-line-opacity: 1;
-               marker-placement: point;
-               marker-type: ellipse;
-               marker-width: 10;
-               marker-allow-overlap: true;
-            }
+/** choropleth visualization */
 
-            #earthquakes_cdbjs_lesson3[net="ak"] {
-               marker-fill: #A6CEE3;
-            }
-            #earthquakes_cdbjs_lesson3[net="ci"] {
-               marker-fill: #1F78B4;
-            }
-            #earthquakes_cdbjs_lesson3[net="hv"] {
-               marker-fill: #B2DF8A;
-            }
-            #earthquakes_cdbjs_lesson3[net="mb"] {
-               marker-fill: #33A02C;
-            }
-            #earthquakes_cdbjs_lesson3[net="nc"] {
-               marker-fill: #FB9A99;
-            }
-            #earthquakes_cdbjs_lesson3[net="nn"] {
-               marker-fill: #E31A1C;
-            }
-            #earthquakes_cdbjs_lesson3[net="pr"] {
-               marker-fill: #FDBF6F;
-            }
-            #earthquakes_cdbjs_lesson3[net="us"] {
-               marker-fill: #FF7F00;
-            }
-            #earthquakes_cdbjs_lesson3[net="uu"] {
-               marker-fill: #CAB2D6;
-            }
-            #earthquakes_cdbjs_lesson3[net="uw"] {
-               marker-fill: #6A3D9A;
-            }
-            #earthquakes_cdbjs_lesson3 {
-               marker-fill: #DDDDDD;
-            }
+			#tweets{
+				marker-fill-opacity: 0.8;
+				marker-line-color: #FFF;
+				marker-line-width: 0;
+				marker-line-opacity: 1;
+				marker-width: 10;
+				marker-fill: #FFFFCC;
+				marker-allow-overlap: true;
+			}
+			#tweets [ followers <= 415418] {
+				marker-fill: #253494;
+			}
+			#tweets [ followers <= 3246] {
+				marker-fill: #2C7FB8;
+			}
+			#tweets [ followers <= 1196] {
+				marker-fill: #41B6C4;
+			}
+			#tweets [ followers <= 537] {
+				marker-fill: #A1DAB4;
+			}
+			#tweets [ followers <= 187] {
+				marker-fill: #FFFFCC;
+			}
+			
             </style>
-            <style type="cartocss/html" id="choropleth-magnitude">
+            
+            <style type="cartocss/html" id="choropleth-retweets">
             /** choropleth visualization */
 
-            #earthquakes_cdbjs_lesson3{
-              marker-fill-opacity: 0.8;
-              marker-line-color: #FFF;
-              marker-line-width: 0;
-              marker-line-opacity: 1;
-              marker-width: 10;
-              marker-fill: #FFFFB2;
-              marker-allow-overlap: true;
+            #tweets{
+            	marker-fill-opacity: 0.8;
+            	marker-line-color: #FFF;
+            	marker-line-width: 0;
+            	marker-line-opacity: 1;
+            	marker-width: 10;
+            	marker-fill: #FFFFCC;
+            	marker-allow-overlap: true;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 7.8] {
-               marker-fill: #B10026;
+            #tweets [ retweets <= 10537] {
+            	marker-fill: #253494;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.955] {
-               marker-fill: #E31A1C;
+            #tweets [ retweets <= 163] {
+            	marker-fill: #2C7FB8;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.295] {
-               marker-fill: #FC4E2A;
+            #tweets [ retweets <= 64] {
+            	marker-fill: #41B6C4;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.735] {
-               marker-fill: #FD8D3C;
+            #tweets [ retweets <= 37] {
+            	marker-fill: #A1DAB4;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.175] {
-               marker-fill: #FEB24C;
+            #tweets [ retweets <= 18] {
+            	marker-fill: #FFFFCC;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.615] {
-               marker-fill: #FED976;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.055] {
-               marker-fill: #FFFFB2;
-            }
-            </style>
-            <style type="cartocss/html" id="bubble-magnitude">
-            /** bubble visualization */
 
-            #earthquakes_cdbjs_lesson3{
-              marker-fill-opacity: 0.9;
-              marker-line-color: #FFF;
-              marker-line-width: 0;
-              marker-line-opacity: 1;
-              marker-placement: point;
-              marker-multi-policy: largest;
-              marker-type: ellipse;
-              marker-fill: #FF5C00;
-              marker-allow-overlap: true;
-              marker-clip: false;
-              marker-comp-op: darken;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 7.8] {
-               marker-width: 25.0;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 3.31] {
-               marker-width: 23.3;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.66] {
-               marker-width: 21.7;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.24] {
-               marker-width: 20.0;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.85] {
-               marker-width: 18.3;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.455] {
-               marker-width: 16.7;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.06] {
-               marker-width: 15.0;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.67] {
-               marker-width: 13.3;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.28] {
-               marker-width: 11.7;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= -0.11] {
-               marker-width: 10.0;
-            }
             </style>
             <style type="cartocss/html" id="bubble-choropleth">
             /** bubble visualization */
+/** bubble visualization */
 
-            #earthquakes_cdbjs_lesson3{
-              marker-fill-opacity: 0.9;
-              marker-line-color: #FFF;
-              marker-line-width: 1;
-              marker-line-opacity: 1;
-              marker-placement: point;
-              marker-multi-policy: largest;
-              marker-type: ellipse;
-              marker-allow-overlap: true;
-              marker-clip: false;
-              marker-comp-op: darken;
-              marker-line-color: #FFF;
-              marker-width: 10;
-              marker-fill: #FFFFB2;
+			#tweets{
+				marker-fill-opacity: 0.9;
+				marker-line-color: #FFF;
+				marker-line-width: 0.5;
+				marker-line-opacity: 1;
+				marker-placement: point;
+				marker-multi-policy: largest;
+				marker-type: ellipse;
+				marker-allow-overlap: true;
+				marker-clip: false;
+				marker-comp-op: overlay;
+            	marker-line-opacity: 1;
+            	marker-width: 10;
+            	marker-fill: #FFFFCC;
             }
-            #earthquakes_cdbjs_lesson3 [ mag <= 7.8] {
-               marker-width: 11.0;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 3.31] {
-               marker-width: 9.9;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.66] {
-               marker-width: 8.8;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 2.24] {
-               marker-width: 7.7;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.85] {
-               marker-width: 6.6;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.455] {
-               marker-width: 5.4;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 1.06] {
-               marker-width: 4.3;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.67] {
-               marker-width: 3.2;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= 0.28] {
-               marker-width: 2.1;
-            }
-            #earthquakes_cdbjs_lesson3 [ mag <= -0.11] {
-               marker-width: 1.0;
-            }
+			#tweets [ followers <= 415418] {
+				marker-width: 25.0;
+			}
+			#tweets [ followers <= 343630] {
+				marker-width: 23.3;
+			}
+			#tweets [ followers <= 95172] {
+				marker-width: 21.7;
+			}
+			#tweets [ followers <= 5022] {
+				marker-width: 20.0;
+			}
+			#tweets [ followers <= 3859] {
+				marker-width: 18.3;
+			}
+			#tweets [ followers <= 1771] {
+				marker-width: 16.7;
+			}
+			#tweets [ followers <= 1407] {
+				marker-width: 15.0;
+			}
+			#tweets [ followers <= 554] {
+				marker-width: 13.3;
+			}
+			#tweets [ followers <= 134] {
+				marker-width: 11.7;
+			}
+			#tweets [ followers <= 84] {
+				marker-width: 10.0;
+			}
             /** choropleth visualization */
 
-            
-            #earthquakes_cdbjs_lesson3 [ depth <= 672.03] {
-               marker-fill: #B10026;
+
+            #tweets [ retweets <= 1771] {
+            	marker-fill: #253494;
             }
-            #earthquakes_cdbjs_lesson3 [ depth <= 95.6] {
-               marker-fill: #E31A1C;
+            #tweets [ retweets <= 50] {
+            	marker-fill: #2C7FB8;
             }
-            #earthquakes_cdbjs_lesson3 [ depth <= 45.2] {
-               marker-fill: #FC4E2A;
+            #tweets [ retweets <= 29] {
+            	marker-fill: #41B6C4;
             }
-            #earthquakes_cdbjs_lesson3 [ depth <= 18.76] {
-               marker-fill: #FD8D3C;
+            #tweets [ retweets <= 17] {
+            	marker-fill: #A1DAB4;
             }
-            #earthquakes_cdbjs_lesson3 [ depth <= 10.34] {
-               marker-fill: #FEB24C;
-            }
-            #earthquakes_cdbjs_lesson3 [ depth <= 6.14] {
-               marker-fill: #FED976;
-            }
-            #earthquakes_cdbjs_lesson3 [ depth <= 2.7] {
-               marker-fill: #FFFFB2;
+            #tweets [ retweets <= 6] {
+            	marker-fill: #FFFFCC;
             }
             </style>
     </head>
@@ -287,19 +216,18 @@
         <div id="cartocss" class="layer_selector">
           <p>CartoCSS Selectors</p>
           <ul>
-            <li data="categ-report-sta" data-type="cartocss">Categorize earthquakes by reporting station</li>
-            <li data="choropleth-magnitude" data-type="cartocss">Color earthquakes by magnitude</li>
-            <li data="bubble-magnitude" data-type="cartocss">Size earthquakes by magnitude</li>
-            <li data="bubble-choropleth" data-type="cartocss">Size earthquakes by magnitude, color by depth</li>
+            <li data="cloropleth-followers" data-type="cartocss">Categorize by followers</li>
+            <li data="choropleth-retweets" data-type="cartocss">Categorize by retweets</li>
+            <li data="bubble-choropleth" data-type="cartocss">Categorize by followers and retweets</li>
             <li data="simple" data-type="cartocss">Reset CartoCSS</li>
         </ul>
     </div>
     <div id="sql" class="layer_selector">
       <p>SQL Selectors</p>
       <ul>
-        <li data=" WHERE mag > 5.0" data-type="sql">Show magnitude >= 5.0</li>
-        <li data=" WHERE type != 'earthquake'" data-type="sql">Show non-earthquakes</li>
-        <li data=" WHERE place ILIKE '%papua new guinea%'" data-type="sql">Show events near Papua New Guinea</li>
+        <li data=" WHERE (followers >= 1000)" data-type="sql">< 1,000 followers </li>
+        <li data=" WHERE (followers >= 1000 AND followers < 10000)" data-type="sql">1,000-10,000 followers</li>
+        <li data=" WHERE (followers >= 10000)" data-type="sql">> 10,000 followers</li>
         <li data="" data-type="sql">Reset SQL</li>
     </ul>
 </div>
@@ -337,11 +265,11 @@
 }
 });
 }
-              var tableName = "earthquakes_cdbjs_lesson3";
+              var tableName = "tweets";
 
   // Put layer data into a JS object
   var layerSource = {
-    user_name: 'documentation', 
+    user_name: 'mjbradburn', 
     type: 'cartodb',
     sublayers: [{ 
       sql: "SELECT * FROM " + tableName, // All recorded earthquakes past 30 days
@@ -358,7 +286,7 @@
     zoom: 4
 });
 
-  L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+  L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map_object);
 
