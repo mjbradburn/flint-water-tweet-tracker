@@ -14,6 +14,14 @@
 	<link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />
 
 	<style type="text/css">
+		a.button {
+			-webkit-appearance: button;
+			-moz-appearance: button;
+			appearance: button;
+
+			text-decoration: none;
+			color: initial;
+		}
 		html, body, #map {
 			height: 100%;
 			padding: 0;
@@ -47,6 +55,7 @@
 			list-style-type: none;
 		}
 		.layer_selector li {
+			float: left!;
 			padding: 15px 30px;
 			font-family: Helvetica, Arial;
 			font-size: 13px;
@@ -212,7 +221,10 @@
 	</style>
 </head>
 <body>
+	<a href="torqueDemo.html" class="button">Animate</a>
 	<div id="map"></div>
+
+	
 	<div id="cartocss" class="layer_selector">
 		<p>CartoCSS Selectors</p>
 		<ul>
@@ -260,6 +272,24 @@
               { name: "18",          value: "#FFFFCC" }
             ]
           });
+          	
+          	legendsArray = [{
+            title: "Category Legend",
+            data: [
+              { name: "Natural Parks",  value: "#58A062" },
+              { name: "Villages",       value: "#F07971" },
+              { name: "Rivers",         value: "#54BFDE" },
+              { name: "Fields",         value: "#9BC562" },
+              { name: "Caves",          value: "#FABB5C" }
+            ]
+          }, {
+            type: "bubble",
+            title: "Bubble Legend",
+            min: 21, max: 20, color: "red"
+          }];
+          var stackedLegend = new cdb.geo.ui.Legend.Stacked({
+            data: legendsArray
+          });
             // Create layer selector
             function createSelector(layer) {
 var condition = ""; // SQL or CartoCSS string
@@ -284,6 +314,9 @@ if (type === "cartocss") { // if a CartoCSS selector is chosen, set the style
 	} else if (selected == "choropleth-retweets"){
 
 		legend = retweetsLegend;
+		$('#map').append(legend.render().el);
+	} else if (selected == "bubble-choropleth"){
+		legend = stackedLegend;
 		$('#map').append(legend.render().el);
 	}
 
@@ -322,12 +355,21 @@ var layerSource = {
 }]
 }
 
+// var layerSource = {
+// 	type: 'torque',
+// 	options: {
+//       user_name: 'mjbradburn', // replace with your user name
+//       table_name: 'tweets',
+//       cartocss: $("#cartocss").html()
+//   }
+// }
+
 // For storing the sublayer
 var sublayer;
 
 // Instantiate new map object, place it in 'map' element
 var map_object = new L.Map('map', {
-center: [37.7741154,-122.4437914], // San Francisco
+center: [39.5,-98.35], // San Francisco
 zoom: 4
 });
 
@@ -348,8 +390,19 @@ cartodb.createLayer(map_object,layerSource)
 	console.log("error: " + err);
 });
 
+$('#map-selector').on('click', function(e){
+	e.preventDefault();
+	alert('animate');
+	var query = "";
+	$.get('/torqueDemo.html',query, function(data){
+		$('#map').html(data);
+	});
+});
+
 
 }
+
+
 </script>
 </body>
 </html>

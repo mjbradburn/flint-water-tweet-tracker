@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map Academy | CartoDB.js &amp; Torque.js</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #desc {
+          position: absolute;
+          top: 10px;
+          left: 45px;
+          border: 1px solid #999;
+          border-radius: 5px;
+          width: 275px;
+          background: rgba(255,255,255,0.9);
+          padding: 0 10px;
+      }
+      #sql-buttons {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+      }
+      .layer_selector {
+          background: rgba(255,255,255,0.9);
+          border-radius: 5px;
+          padding: 0;
+          border: 1px solid #999;
+          width: 250px;
+      }
+      .layer_selector > p {
+          padding: 15px 30px;
+          border-bottom: 1px solid #999;
+          margin-bottom: 0;
+      }
+      .layer_selector ul {
+          padding: 0; 
+          margin: 0;
+          list-style-type: none;
+      }
+      .layer_selector li {
+          padding: 15px 30px;
+          font-family: Helvetica, Arial;
+          font-size: 13px;
+          color: #444;
+          cursor: pointer;
+      }
+      .layer_selector li:not(:last-child) {
+          border-bottom: 1px solid #999;
+      }
+      .layer_selector li:hover {
+          background-color: #F0F0F0;
+          cursor: pointer;
+      }
+    </style>
+    <style type="cartocss/text" id="cartocss">
+      /** torque visualization */
+
+      Map {
+        -torque-frame-count:128;
+        -torque-animation-duration:30;
+        -torque-time-attribute:"created_at";
+        -torque-aggregation-function:"count(cartodb_id)";
+        -torque-resolution:2;
+        -torque-data-aggregation:cumulative;
+      }
+
+      #tweets{
+        comp-op: lighter;
+        marker-fill-opacity: 0.9;
+        marker-line-color: #FFF;
+        marker-line-width: 0;
+        marker-line-opacity: 1;
+        marker-type: ellipse;
+        marker-width: 8;
+        marker-fill: #2167AB;
+      }
+      #tweets[frame-offset=1] {
+       marker-width:10;
+       marker-fill-opacity:0.45; 
+     }
+     #tweets[frame-offset=2] {
+       marker-width:12;
+       marker-fill-opacity:0.225; 
+     }
+     #tweets[frame-offset=3] {
+       marker-width:14;
+       marker-fill-opacity:0.15; 
+     }
+   </style>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    
+    <!-- place your code below -->
+    <script>
+    function main() {
+  // Instantiate new map object, place it in 'map' element
+  var map = new L.Map('map', {
+    center: [39.5,-98.35],
+    zoom: 4,
+    scrollWheelZoom: false
+  });
+
+  // setup layer
+  var layerSource = {
+    type: 'torque',
+    options: {
+      user_name: 'mjbradburn', // replace with your user name
+      table_name: 'tweets',
+      cartocss: $("#cartocss").html()
+    }
+  }
+
+  var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+});
+  map.addLayer(layer);
+
+  // put torque layer on top of basemap
+  cartodb.createLayer(map, layerSource)
+    .addTo(map)
+    .done(function(layer) {
+      // do stuff
+    })
+    .error(function(err) {
+      console.log("Error: " + err);
+    });
+}
+
+window.onload = main;
+    
+    </script>
+  </body>
+</html>
