@@ -1,4 +1,5 @@
 <?php
+include 'header.php';
 require_once('TwitterAPIExchange.php');
 require_once('Geocode.php');
 /** Set access tokens **/
@@ -11,8 +12,6 @@ $settings = array (
 
 $url = "https://api.twitter.com/1.1/search/tweets.json";
 $requestMethod = "GET";
-/*$since_id = "471479529731411968";
-$max_id = "697189541694873600";*/
 $getfield = '?q=%23#flintwatercrisis&src=tyah&result_type=recent&count=100';
 $twitter = new TwitterAPIExchange($settings);
 
@@ -36,6 +35,8 @@ foreach($string["statuses"] as $statuses){
 	}
 	$id = $statuses['id'];
 	echo "Tweet_ID: ".$id."<br />";
+	$username = "@".$statuses['user']['screen_name'];
+	echo "Handle: ".$username."<br />";
 	//convert date to mysql datetime format
 	$twitter_date = $statuses['created_at'];
 	$format = 'D M d H:i:s \+\0\0\0\0 Y';
@@ -55,8 +56,13 @@ foreach($string["statuses"] as $statuses){
 	$followers = $statuses['user']['followers_count'];
 	$retweets = $statuses['retweet_count'];
 	echo "Followers: " .$followers."<br />" ;
-	echo "Retweets: " .$retweets."<br /><hr />";
+	echo "Retweets: " .$retweets."<br />";
 
+	$text = str_replace("'","\\'",$statuses['text']);
+	//echo "<script type='text/javascript'>alert('$text');</script>";
+	echo "Text: " .$text."<br /><hr />";
+	//$text = mysql_real_escape_string($text);
+	//echo "<script type='text/javascript'>alert('$text');</script>";
 	//insert into database
 	$con = mysqli_connect("localhost","newuser","password","tweetmap");
 	if (!$con){ 
@@ -65,11 +71,11 @@ foreach($string["statuses"] as $statuses){
 		echo "Debugging error:".mysqli_connect_error().PHP_EOL;
 		exit;
 	}
-	//echo "Success: connection was made. ". PHP_EOL;
 
 	if($lat){
-		$query = "INSERT INTO tweets (`id`,`created_at`,`latitude`,`longitude`,`followers`,`retweets`)
-		VALUES ('$id','$created_at',$lat,$long,$followers,$retweets)";
+		// $text = "".mysql_real_escape_string($text);
+		$query = "INSERT INTO tweets (`id`,`handle`,`created_at`,`latitude`,`longitude`,`followers`,`retweets`,`text`)
+		VALUES ('$id','$username','$created_at',$lat,$long,$followers,$retweets,'$text')";
 		if (mysqli_query($con,$query)){
 			echo "insert success";
 		} else {
@@ -92,7 +98,7 @@ if($string["errors"][0]["message"] != ""){
 }
 
 echo "<pre>";
-print_r($string);
+print_r(json_encode($string));
 echo "</pre>";
 
 ?>
