@@ -1,0 +1,115 @@
+ <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="dataTables.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      var dataArray = [];
+      $.getJSON('https://mjbradburn.cartodb.com/api/v2/sql/?q=+SELECT * FROM tweets', //function(data) {$.each(data.rows, function(key, val) {
+      //     console.log(key +","+ val['id']);
+      //   });
+        function(json) {
+          var fields = ["created_at","retweets","followers"];
+        //   $.each(json.fields, function (key,val) {
+        //     fields.push(key);
+        //     //console.log(fields);
+
+        // });
+          //console.log(fields);
+          
+          var row = [];
+          var retweet_ct = 0;
+          var follower_ct = 0;
+          $.each(json.rows, function(key,val){
+            
+            //var row_num = 0;
+            //var row = [];
+            // row.push(val.cartodb_id);
+            // row.push(val.the_geom);
+            // row.push(val.the_geom_webmercator);
+            // row.push(val.id);
+            // row.push(val.retweets);
+            // row.push(val.followers);
+            // row.push(val.longitude);
+            // row.push(val.latitude);
+            var date = new Date(val.created_at);
+            row.push(date.toDateString());
+            // row.push(val.created_at);
+            row.push(val.retweets + retweet_ct);
+            retweet_ct += val.retweets;
+            row.push(follower_ct += val.followers);
+            follower_ct += val.followers;
+            alert(row.length);
+            //row_num++;
+            //rows.push(row);
+          });
+          //console.log(rows);
+          dataArray.push(fields);
+          for (var data=0;data < row.length; data+=3){
+          
+            var aRow = [];
+            // for (var c=0;c<fields.length;c++){
+            //   //console.log(data+c);
+            //   aRow.push(row[data+c]);
+            // }
+            for (var c=0;c<3;c++){
+              //console.log(data+c);
+              aRow.push(row[data+c]);
+            }
+            dataArray.push(aRow);
+         }
+          
+          
+          console.log(dataArray);
+      }
+        //console.log(object.rows.fields);
+      );
+      // function(data) {$.each(data.fields, function(key,val) {
+      //     dataArray.push(val);
+      //     console.log(dataArray);
+      //   });
+      // });
+  //   var dtable = $('#data-table').DataTable({
+  //   ajax : {
+  //     url : 'https://mjbradburn.cartodb.com/api/v2/sql/?q=+SELECT * FROM tweets',
+  //     type : 'GET',
+  //     dataSrc : 'rows'
+  //   },
+  //   order : [[0, "asc"]]
+  //  // columns : dtableColumns
+  // });
+
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+          title: 'Cumulative Retweets and Followers',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          series: {
+            0: {targetAxisIndex: 0},
+            1: {targetAxisIndex: 1}
+          },
+          vAxes: {
+            0: {title: "Retweets"},
+            1: {title: "Followers"}
+          },
+          vAxis: {
+            viewWindow:{min:0}
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <div id="data-table"></div>
+  </body>
+</html>
