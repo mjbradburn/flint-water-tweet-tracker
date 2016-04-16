@@ -1,8 +1,8 @@
  <html>
   <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
     <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript" src="dataTables.js"></script>
+    <!--<script type="text/javascript" src="dataTables.js"></script>-->
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
@@ -41,7 +41,7 @@
             retweet_ct += val.retweets;
             row.push(follower_ct += val.followers);
             follower_ct += val.followers;
-            alert(row.length);
+            // alert(row.length);
             //row_num++;
             //rows.push(row);
           });
@@ -62,7 +62,7 @@
          }
           
           
-          console.log(dataArray);
+          //console.log(dataArray);
       }
         //console.log(object.rows.fields);
       );

@@ -11,7 +11,8 @@
 	<link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
 
 	<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" type="text/css" />
-	<link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />
+	<!--<link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />-->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 	<style type="text/css">
 		a.button {
@@ -26,6 +27,9 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
+		}
+		#torque {
+			height: 100%;
 		}
 		#cartocss {
 			position: absolute;
@@ -219,10 +223,20 @@
 			marker-fill: #FFFFCC;
 		}
 	</style>
+	
+	    <!--<script type="text/javascript" src="dataTables.js"></script>-->
+
+	<!--<script type="text/javascript" src="dataTables.js"></script>-->
 </head>
 <body>
-	<a href="torqueDemo.html" class="button">Animate</a>
+	<!--<a href="torqueDemo.html" class="button">Animate</a>-->
+	<button  id="animate" class="button">Animate</button>
+
 	<div id="map"></div>
+	<div id="torque"></div>
+	<div id="chart">
+		<!-- <iframe src="googlechartdemo.html" width="100%" height="200px"></iframe> -->
+	</div>
 
 	
 	<div id="cartocss" class="layer_selector">
@@ -251,6 +265,39 @@
 	<script type="text/javascript">
 
 		window.onload = function () {
+
+				
+
+				$.ajax({
+					type: "GET",
+					url: "googlechartdemo.html",
+					dataType: "html"
+				}).done(function(data){
+						$('#chart').append(data);
+						
+				});	
+
+		$('#animate').click(function(){
+			alert('clicked');
+			$.ajax({
+				type: "GET",
+				url: "torqueDemo.html",
+				dataType: "html"
+			}).done(function(data){
+				$('#map').hide();
+				
+				$('#torque').html(data);
+				//$('#chart').replaceWith("");
+			});
+
+		});
+			
+
+					
+
+			// $('#chart').load("http://localhost:8888/cartoDBmap/googlechartdemo.html", function(){
+			// 	alert('load done');
+			// });
 
 			var followersLegend = new cdb.geo.ui.Legend.Custom({
             	title: "Followers",
