@@ -1,0 +1,425 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+
+
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" type="text/css" />
+  <link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style type="text/css">
+
+    .col {
+      height: 50vh;
+    }
+    </style>
+    <style type="text/css">
+    a.button {
+      -webkit-appearance: button;
+      -moz-appearance: button;
+      appearance: button;
+
+      text-decoration: none;
+      color: initial;
+    }
+/*    html, body, #map {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }*/
+    #torque {
+      height: 100%;
+    }
+    #cartocss {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    #sql {
+      position: absolute;
+      top: 20px;
+      right: 292px;
+    }
+    .layer_selector {
+      background: rgba(255,255,255,0.9);
+      border-radius: 5px;
+      padding: 0;
+      border: 1px solid #999;
+      width: 250px;
+    }
+
+    .layer_selector > p {
+      padding: 15px 30px;
+      border-bottom: 1px solid #999;
+    }
+
+    .layer_selector ul {
+      padding: 0; margin: 0;
+      list-style-type: none;
+    }
+    .layer_selector li {
+      float: left!;
+      padding: 15px 30px;
+      font-family: Helvetica, Arial;
+      font-size: 13px;
+      color: #444;
+      cursor: pointer;
+    }
+    .layer_selector li:not(:last-child) {
+      border-bottom: 1px solid #999;
+    }
+    .layer_selector li:hover {
+      background-color: #F0F0F0;
+      cursor: pointer;
+    }
+    .layer_selector li.sql_selected,
+    .layer_selector li.cartocss_selected {
+      background-color: #A6CEE3;
+    }
+  </style>
+<style type="cartocss/html" id="simple">
+    /** simple visualization */
+
+    #tweets{
+      marker-fill-opacity: 0.9;
+      marker-line-color: #FFF;
+      marker-line-width: 0.5;
+      marker-line-opacity: 1;
+      marker-placement: point;
+      marker-type: ellipse;
+      marker-width: 10;
+      marker-fill: #5CA2D1;
+      marker-allow-overlap: true;
+    }
+  </style>
+  <style type="cartocss/html" id="cloropleth-followers">
+    /** category visualization */
+
+    /** choropleth visualization */
+
+    #tweets{
+      marker-fill-opacity: 0.8;
+      marker-line-color: #FFF;
+      marker-line-width: 0;
+      marker-line-opacity: 1;
+      marker-width: 10;
+      marker-fill: #FFFFCC;
+      marker-allow-overlap: true;
+    }
+    #tweets [ followers <= 415418] {
+      marker-fill: #253494;
+    }
+    #tweets [ followers <= 3246] {
+      marker-fill: #2C7FB8;
+    }
+    #tweets [ followers <= 1196] {
+      marker-fill: #41B6C4;
+    }
+    #tweets [ followers <= 537] {
+      marker-fill: #A1DAB4;
+    }
+    #tweets [ followers <= 187] {
+      marker-fill: #FFFFCC;
+    }
+
+  </style>
+
+  <style type="cartocss/html" id="choropleth-retweets">
+    /** choropleth visualization */
+
+    #tweets{
+      marker-fill-opacity: 0.8;
+      marker-line-color: #FFF;
+      marker-line-width: 0;
+      marker-line-opacity: 1;
+      marker-width: 10;
+      marker-fill: #FFFFCC;
+      marker-allow-overlap: true;
+    }
+    #tweets [ retweets <= 10537] {
+      marker-fill: #253494;
+    }
+    #tweets [ retweets <= 163] {
+      marker-fill: #2C7FB8;
+    }
+    #tweets [ retweets <= 64] {
+      marker-fill: #41B6C4;
+    }
+    #tweets [ retweets <= 37] {
+      marker-fill: #A1DAB4;
+    }
+    #tweets [ retweets <= 18] {
+      marker-fill: #FFFFCC;
+    }
+
+  </style>
+  <style type="cartocss/html" id="bubble-choropleth">
+    /** bubble visualization */
+    /** bubble visualization */
+
+    #tweets{
+      marker-fill-opacity: 0.9;
+      marker-line-color: #FFF;
+      marker-line-width: 0.5;
+      marker-line-opacity: 1;
+      marker-placement: point;
+      marker-multi-policy: largest;
+      marker-type: ellipse;
+      marker-allow-overlap: true;
+      marker-clip: false;
+      marker-comp-op: overlay;
+      marker-line-opacity: 1;
+      marker-width: 10;
+      marker-fill: #FFFFCC;
+    }
+    #tweets [ followers <= 415418] {
+      marker-width: 25.0;
+    }
+    #tweets [ followers <= 343630] {
+      marker-width: 23.3;
+    }
+    #tweets [ followers <= 95172] {
+      marker-width: 21.7;
+    }
+    #tweets [ followers <= 5022] {
+      marker-width: 20.0;
+    }
+    #tweets [ followers <= 3859] {
+      marker-width: 18.3;
+    }
+    #tweets [ followers <= 1771] {
+      marker-width: 16.7;
+    }
+    #tweets [ followers <= 1407] {
+      marker-width: 15.0;
+    }
+    #tweets [ followers <= 554] {
+      marker-width: 13.3;
+    }
+    #tweets [ followers <= 134] {
+      marker-width: 11.7;
+    }
+    #tweets [ followers <= 84] {
+      marker-width: 10.0;
+    }
+    /** choropleth visualization */
+
+
+    #tweets [ retweets <= 1771] {
+      marker-fill: #253494;
+    }
+    #tweets [ retweets <= 50] {
+      marker-fill: #2C7FB8;
+    }
+    #tweets [ retweets <= 29] {
+      marker-fill: #41B6C4;
+    }
+    #tweets [ retweets <= 17] {
+      marker-fill: #A1DAB4;
+    }
+    #tweets [ retweets <= 6] {
+      marker-fill: #FFFFCC;
+    }
+  </style>
+  </head>
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+    <!-- Dropdown Structure -->
+    <ul id="sql" class="dropdown-content">
+      <li data=" WHERE (followers >= 1000)" data-type="sql">< 1,000 followers </li>
+      <li data=" WHERE (followers >= 1000 AND followers < 10000)" data-type="sql">1,000-10,000 followers</li>
+      <li data=" WHERE (followers >= 10000)" data-type="sql">> 10,000 followers</li>
+      <li data=" WHERE (state LIKE 'California')" data-type="sql">California</li>
+      <li data="" data-type="sql">Reset SQL</li>
+    </ul>
+
+    <ul id="cartocss" class="dropdown-content">
+      <li data="cloropleth-followers" data-type="cartocss">Categorize by followers
+      </li>
+      <li data="choropleth-retweets" data-type="cartocss">Categorize by retweets
+      </li>
+      <li data="bubble-choropleth" data-type="cartocss">Categorize by followers and retweets</li>
+      <li data="simple" data-type="cartocss">Reset CartoCSS</li>
+    </ul>
+    <nav>
+      <div class="nav-wrapper col s12">
+        <a href="#!" class="brand-logo">TweetMap</a>
+        <ul class="right hide-on-med-and-down">
+        <li><a class="dropdown-button" href="#!" data-activates="sql">Filter<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a class="dropdown-button" href="#!" data-activates="cartocss">Attributes<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li>  <a class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">play_arrow</i></a>
+        </li>
+          <!-- Dropdown Trigger -->
+          
+        </ul>
+      </div>
+    </nav>
+    <div class="row">
+      <div id="map" class="col l12 teal">
+
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div id="chart" class="col l12  blue">
+  
+      </div>
+    </div>
+
+        <!-- include cartodb.js library -->
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+window.onload = function () {
+  $.ajax({
+      type: "GET",
+      url: "googlechartdemo.html",
+      dataType: "html"
+  }).done(function(data){
+      $('#chart').append(data);        
+  });
+
+var followersLegend = new cdb.geo.ui.Legend.Custom({
+              title: "Followers",
+              data: [
+                { name: "10000",  value: "#253494" },
+                { name: "3246",       value: "#2C7FB8" },
+                { name: "1196",         value: "#41B6C4" },
+                { name: "537",         value: "#A1DAB4" },
+                { name: "187",          value: "#FFFFCC" }
+              ]
+            });
+            var retweetsLegend = new cdb.geo.ui.Legend.Custom({
+            title: "Retweets",
+            data: [
+              { name: "10537",  value: "#253494" },
+              { name: "163",       value: "#2C7FB8" },
+              { name: "64",         value: "#41B6C4" },
+              { name: "37",         value: "#A1DAB4" },
+              { name: "18",          value: "#FFFFCC" }
+            ]
+          });
+            
+            legendsArray = [{
+            title: "Category Legend",
+            data: [
+              { name: "Natural Parks",  value: "#58A062" },
+              { name: "Villages",       value: "#F07971" },
+              { name: "Rivers",         value: "#54BFDE" },
+              { name: "Fields",         value: "#9BC562" },
+              { name: "Caves",          value: "#FABB5C" }
+            ]
+          }, {
+            type: "bubble",
+            title: "Bubble Legend",
+            min: 21, max: 20, color: "red"
+          }];
+          var stackedLegend = new cdb.geo.ui.Legend.Stacked({
+            data: legendsArray
+          });
+// Create layer selector
+function createSelector(layer) {
+  var condition = ""; // SQL or CartoCSS string
+  var $options = $(".dropdown-content").find("li");
+  $options.click(function(e) {
+    var $li = $(e.target);
+    var selected = $li.attr('data');
+  var type = $li.data('type'); // 'sql' or 'cartocss'
+  
+  if (type === "cartocss") { // if a CartoCSS selector is chosen, set the style
+    $options.removeClass('cartocss_selected');
+    $('.cartodb-legend').remove();
+    //remove legend
+    $('#map').removeClass("cartodb-legend");
+    if (selected !== "simple") {
+      $li.addClass('cartocss_selected');
+    }
+    //add legend
+    if (selected == "cloropleth-followers"){
+      legend = followersLegend;
+      $('#map').append(legend.render().el);
+    } else if (selected == "choropleth-retweets"){
+
+      legend = retweetsLegend;
+      $('#map').append(legend.render().el);
+    } else if (selected == "bubble-choropleth"){
+      legend = stackedLegend;
+      $('#map').append(legend.render().el);
+    }
+
+    condition = $('#'+selected).text();
+    layer.setCartoCSS(condition);
+
+  } else { // if a SQL selector is chosen, re-query the data
+    $options.removeClass('sql_selected');
+    if (selected !== "") {
+      $li.addClass('sql_selected');
+    }
+
+    layer.setSQL("SELECT * FROM " + tableName + selected);
+  }
+  });
+}
+
+      
+var tableName = "tweets2";
+
+// Put layer data into a JS object
+var layerSource = {
+  user_name: 'mjbradburn', 
+  type: 'cartodb',
+  sublayers: [{ 
+  sql: "SELECT * FROM " + tableName, // All recorded earthquakes past 30 days
+  cartocss: $("#simple").text()
+  ,// Simple visualization
+  interactivity: ['retweets','followers']
+}]
+}
+
+// For storing the sublayer
+var sublayer;
+
+// Instantiate new map object, place it in 'map' element
+var map_object = new L.Map('map', {
+center: [39.5,-98.35], // San Francisco
+zoom: 4
+});
+
+L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map_object);
+
+// Add data layer to your map
+cartodb.createLayer(map_object,layerSource)
+.addTo(map_object)
+.done(function(layer) {
+  sublayer = layer.getSubLayer(0);
+  createSelector(sublayer);
+  cdb.vis.Vis.addInfowindow(map_object,sublayer,['handle','text','retweets','followers'])
+
+})
+.error(function(err) {
+  console.log("error: " + err);
+});
+
+
+
+
+}
+
+</script>
+
+
+    
+  </body>
+  </html>
