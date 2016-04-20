@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Get Tweets</title>
-	<meta http-equiv="refresh" content="3600">
+	<meta http-equiv="refresh" content="1800">
 </head>
 <body>
 

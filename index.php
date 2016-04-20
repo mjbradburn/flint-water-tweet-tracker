@@ -2,6 +2,7 @@
 include 'header.php';
 require_once('TwitterAPIExchange.php');
 require_once('Geocode.php');
+require_once('ReverseGeocode.php');
 /** Set access tokens **/
 $settings = array (
 	'oauth_access_token'=>"363822513-CPj3YUXqvSiUjd6819PRqGmafXKiNVXyG6R69j3j",
@@ -12,7 +13,7 @@ $settings = array (
 
 $url = "https://api.twitter.com/1.1/search/tweets.json";
 $requestMethod = "GET";
-$getfield = '?q=%23#flintwatercrisis&src=tyah&result_type=recent&count=100';
+$getfield = '?q=%23#BostonMarathon&src=tyah&result_type=recent&count=100';
 $twitter = new TwitterAPIExchange($settings);
 
 $string = json_decode($twitter->setGetField($getfield)
@@ -22,16 +23,24 @@ $string = json_decode($twitter->setGetField($getfield)
 if (file_exists('coordinates.json')){
  	$saved_coords = json_decode(file_get_contents('coordinates.json'),true);
 } else {
-	$saved_coords['flint'] = array('lat'=>43.01,'long'=>83.69);
+	$saved_coords['flint'] = array('lat'=>43.01,'long'=>83.69,'state'=>"Michigan");
 }
 $count = 0;
 foreach($string["statuses"] as $statuses){
 	$count++;
 	$location = strtolower($statuses['user']['location']);
 	//check to see if we already have that location OR get it.
+	echo "location is: ".$location;
 	if($location && !array_key_exists ( $location , $saved_coords )){
 		$coordinates = geocode($location);
-		$saved_coords[$location] = array('lat'=>$coordinates['lat'],'long'=>$coordinates['long']);
+			if ($coordinates){
+				$state = reverseGeocode($coordinates['lat'],$coordinates['long']);
+				$saved_coords[$location] = 
+				array('lat'=>$coordinates['lat'],'long'=>$coordinates['long'],'state'=>$state);	
+			} 
+	} else {
+		$state = NULL;
+		//$location=NULL;
 	}
 	$id = $statuses['id'];
 	echo "Tweet_ID: ".$id."<br />";
@@ -49,8 +58,14 @@ foreach($string["statuses"] as $statuses){
 	if($location){
 		$lat = $saved_coords[$location]['lat'];
 		$long = $saved_coords[$location]['long'];
+		$state = $saved_coords[$location]['state'];
 		echo "Latitude: ".$lat."<br />";
 		echo "Longitude: ".$long."<br />";
+		echo "State: ".$state."<br />";
+	} else {
+		$lat = NULL;
+		$long = NULL;
+		$state = NULL;
 	}
 
 	$followers = $statuses['user']['followers_count'];
@@ -74,8 +89,8 @@ foreach($string["statuses"] as $statuses){
 
 	if($lat){
 		// $text = "".mysql_real_escape_string($text);
-		$query = "INSERT INTO tweets (`id`,`handle`,`created_at`,`latitude`,`longitude`,`followers`,`retweets`,`text`)
-		VALUES ('$id','$username','$created_at',$lat,$long,$followers,$retweets,'$text')";
+		$query = "INSERT INTO tweets_fresh (`id`,`handle`,`created_at`,`latitude`,`longitude`,`state`,`followers`,`retweets`,`text`)
+		VALUES ('$id','$username','$created_at',$lat,$long,'$state',$followers,$retweets,'$text')";
 		if (mysqli_query($con,$query)){
 			echo "insert success";
 		} else {
