@@ -13,6 +13,10 @@
 	<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" type="text/css" />
 	<!--<link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />-->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.3.min.js"></script>
+	<!--<link rel="stylesheet" href="jquery/jquery-ui.css">
+  	<script src="jquery/external/jquery/jquery.js"></script>
+  	<script src="jquery/jquery-ui.js"></script>-->
 
 	<style type="text/css">
 		a.button {
@@ -251,6 +255,13 @@
 	<div id="sql" class="layer_selector">
 		<p>SQL Selectors</p>
 		<ul>
+<!-- 			<p>
+  				<label for="amount">Followers:</label>
+  				<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+ 
+		<div id="slider-range"></div> -->
+
 			<li data=" WHERE (followers >= 1000)" data-type="sql">< 1,000 followers </li>
 			<li data=" WHERE (followers >= 1000 AND followers < 10000)" data-type="sql">1,000-10,000 followers</li>
 			<li data=" WHERE (followers >= 10000)" data-type="sql">> 10,000 followers</li>
@@ -266,7 +277,19 @@
 
 		window.onload = function () {
 
-				
+		// 		  $(function() {
+  //   $( "#slider-range" ).slider({
+  //     range: true,
+  //     min: 0,
+  //     max: 1000000,
+  //     values: [ 0, 900000 ],
+  //     slide: function( event, ui ) {
+  //       $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+  //     }
+  //   });
+  //   $( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+  //     " - " + $( "#slider-range" ).slider( "values", 1 ) );
+  // });
 
 				$.ajax({
 					type: "GET",
