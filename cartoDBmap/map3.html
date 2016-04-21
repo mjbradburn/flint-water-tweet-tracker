@@ -7,27 +7,25 @@
 	<link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
 	<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" type="text/css" />
 	<!--<link rel="stylesheet" href="http://academy.cartodb.com/css/cdbui.css" type="text/css" />-->
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
-	</script>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.3.min.js"></script>
 	<!--<link rel="stylesheet" href="jquery/jquery-ui.css">
   	<script src="jquery/external/jquery/jquery.js"></script>
   	<script src="jquery/jquery-ui.js"></script>-->
     <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+<!--     <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/> -->
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
     <style type="text/css">
 
-    .col {
+/*    .col {
       height: 50vh;
-    }
+    }*/
     </style>
 	<style type="text/css">
-		/*a.button {
+		a.button {
 			-webkit-appearance: button;
 			-moz-appearance: button;
 			appearance: button;
@@ -88,7 +86,7 @@
 		.layer_selector li.sql_selected,
 		.layer_selector li.cartocss_selected {
 			background-color: #A6CEE3;
-		}*/
+		}
 	</style>
 
 	<style type="cartocss/html" id="simple">
@@ -241,10 +239,7 @@
 	<!--<script type="text/javascript" src="dataTables.js"></script>-->
 </head>
 <body>
-	<!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-	<!--<a href="torqueDemo.html" class="button">Animate</a>-->
+
 	<button  id="animate" class="button">Animate</button>
 
 	<div id="map"></div>
@@ -282,6 +277,7 @@
 
 	<!-- include cartodb.js library -->
 	<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js" type="text/javascript"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 	<!-- Place your code in the script tags below -->
 	<script type="text/javascript">
@@ -289,37 +285,6 @@
 		window.onload = function () {
 
 
-
-				$.ajax({
-					type: "GET",
-					url: "googlechartdemo.html",
-					dataType: "html"
-				}).done(function(data){
-						$('#chart').append(data);
-						
-				});	
-
-		$('#animate').click(function(){
-			alert('clicked');
-			$.ajax({
-				type: "GET",
-				url: "torqueDemo.html",
-				dataType: "html"
-			}).done(function(data){
-				$('#map').hide();
-				
-				$('#torque').html(data);
-				//$('#chart').replaceWith("");
-			});
-
-		});
-			
-
-					
-
-			// $('#chart').load("http://localhost:8888/cartoDBmap/googlechartdemo.html", function(){
-			// 	alert('load done');
-			// });
 
 			var followersLegend = new cdb.geo.ui.Legend.Custom({
             	title: "Followers",
@@ -457,6 +422,26 @@ $('#map-selector').on('click', function(e){
 	var query = "";
 	$.get('/torqueDemo.html',query, function(data){
 		$('#map').html(data);
+	});
+});
+
+$.ajax({
+	type: "GET",
+	url: "googlechartdemo.html",
+	dataType: "html"
+}).done(function(data){
+	$('#chart').append(data);
+});	
+
+$('#animate').click(function(){
+	alert('clicked');
+	$.ajax({
+		type: "GET",
+		url: "torqueDemo.html",
+		dataType: "html"
+	}).done(function(data){
+		$('#map').hide();
+		$('#torque').html(data);
 	});
 });
 
